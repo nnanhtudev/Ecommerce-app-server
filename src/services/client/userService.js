@@ -1,6 +1,7 @@
 import User from "../../models/User";
 import bcrypt from "bcrypt";
 import Role from "../../models/Role";
+import { createJWTUser } from "../../middlewares/JWTAction";
 
 const saltRounds = 10;
 const salt = bcrypt.genSaltSync(saltRounds);
@@ -80,4 +81,38 @@ const handleRegisterUser = async (dataUser) => {
   }
 };
 
-module.exports = { handleRegisterUser };
+const handleLoginUser = async (dataUser) => {
+  try {
+    let emailInput = dataUser.email;
+    let passwordInput = dataUser.password;
+    let getUserByEmail = await User.findOne({ email: emailInput }).populate("role");
+    if (!getUserByEmail || !comparePassword(passwordInput, getUserByEmail.password)) {
+      return {
+        EM: "Please Check Your Email & Password",
+        EC: -1,
+        DT: [],
+      };
+    }
+    let payload = {
+      id: getUserByEmail._id,
+      fullName: getUserByEmail.fullName,
+      roleUser: getUserByEmail.role,
+    };
+    let token = createJWTUser(payload);
+    return {
+      EM: "Login account success!",
+      EC: 0,
+      DT: {
+        access_token: token,
+      },
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      EM: "Error form with service",
+      EC: -2,
+      DT: [],
+    };
+  }
+};
+module.exports = { handleRegisterUser, handleLoginUser };

@@ -4,7 +4,7 @@ import connectDB from "./config/database";
 import initAPIRoutesAdmin from "./router/admin";
 import initAPIRoutesClient from "./router/client";
 import configCORS from "./config/cors";
-// import routes from "./routes"; // Import routes từ thư mục routes
+import cookieParser from "cookie-parser";
 
 const app = express();
 
@@ -16,6 +16,9 @@ configCORS(app);
 // config bodyParser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+//config cookies parser
+app.use(cookieParser());
 
 // config routes
 initAPIRoutesAdmin(app, "api/v1/admin");
