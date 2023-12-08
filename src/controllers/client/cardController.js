@@ -36,4 +36,40 @@ const getCardByUser = async (req, res) => {
     });
   }
 };
-module.exports = { addCard, getCardByUser };
+
+const editCartsByUser = async (req, res) => {
+  try {
+    const { idUser, idProduct, count } = req.query;
+    let dataCard = await cardService.handleEditCartsByUser(idUser, idProduct, count);
+    return res.status(200).json({
+      EM: dataCard.EM, //error message,
+      EC: dataCard.EC, //error code
+      DT: dataCard.DT, //data
+    });
+  } catch (error) {
+    return res.status(500).json({
+      EM: "error from server", //error message,
+      EC: -1, //error code
+      DT: "", //data
+    });
+  }
+};
+
+const deleteCartsByUser = async (req, res) => {
+  try {
+    const { idUser, idProduct } = req.query;
+    let dataCard = await cardService.handleDeleteCartsByUser(idUser, idProduct);
+    return res.status(200).json({
+      EM: dataCard.EM, //error message,
+      EC: dataCard.EC, //error code
+      DT: dataCard.DT, //data
+    });
+  } catch (error) {
+    return res.status(500).json({
+      EM: "error from server", //error message,
+      EC: -1, //error code
+      DT: "", //data
+    });
+  }
+};
+module.exports = { addCard, getCardByUser, editCartsByUser, deleteCartsByUser };

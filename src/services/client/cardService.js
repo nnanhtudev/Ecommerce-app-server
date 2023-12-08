@@ -95,4 +95,77 @@ const handleGetCardByUser = async (idUser) => {
   }
 };
 
-module.exports = { handleAddCard, handleGetCardByUser };
+const handleEditCartsByUser = async (idUser, idProduct, count) => {
+  try {
+    if (idUser === "undefined") {
+      return {
+        EM: "Not found idUser",
+        EC: -1,
+        DT: [],
+      };
+    }
+    if (!idProduct && !count) {
+      return {
+        EM: "Not found product/count",
+        EC: -1,
+        DT: [],
+      };
+    }
+    let findCardByUser = await Cart.findOne({ user: idUser, products: idProduct }).populate("products");
+    if (findCardByUser) {
+      let totalAmountUpdates = findCardByUser.products.price * count;
+      console.log(totalAmountUpdates);
+      let updateCard = await Cart.updateOne(
+        { user: idUser, products: idProduct },
+        {
+          $set: {
+            count: count,
+            totalAmount: totalAmountUpdates,
+          },
+        }
+      );
+      if (updateCard) {
+        return {
+          EM: "Update Carts successfully",
+          EC: 0,
+          DT: updateCard,
+        };
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    return {
+      EM: "Error form with service",
+      EC: -2,
+      DT: [],
+    };
+  }
+};
+
+const handleDeleteCartsByUser = async (idUser, idProduct) => {
+  try {
+    if (idUser === "undefined" || !idProduct) {
+      return {
+        EM: "Not found user/product",
+        EC: -1,
+        DT: [],
+      };
+    }
+    let deleteProductByUser = await Cart.deleteOne({ user: idUser, products: idProduct });
+    if (deleteProductByUser) {
+      return {
+        EM: "Delete Carts successfully",
+        EC: 0,
+        DT: deleteProductByUser,
+      };
+    }
+  } catch (error) {
+    console.log(error);
+    return {
+      EM: "Error form with service",
+      EC: -2,
+      DT: [],
+    };
+  }
+};
+module.exports = { handleAddCard, handleGetCardByUser, handleEditCartsByUser, handleDeleteCartsByUser };
