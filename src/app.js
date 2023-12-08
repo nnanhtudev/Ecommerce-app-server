@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // config routes
-initAPIRoutesAdmin(app, "api/v1/admin");
 initAPIRoutesClient(app, "api/v1/client");
+initAPIRoutesAdmin(app, "api/v1/admin");
 
 export default app;

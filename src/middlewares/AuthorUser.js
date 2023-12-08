@@ -5,12 +5,10 @@ const nonSecurePaths = ["/logout", "/login", "/register"];
 const checkUserJWT = (req, res, next) => {
   if (nonSecurePaths.includes(req.path)) return next();
   let cookies = req.cookies;
-  console.log(cookies);
   let tokenFormHeader = extractToken(req);
   if ((cookies && cookies.account) || tokenFormHeader) {
     let token = cookies && cookies.account ? cookies.account : tokenFormHeader;
     let decoded = verifyToken(token);
-    console.log(decoded);
     if (decoded) {
       req.user = decoded;
       req.token = token;
