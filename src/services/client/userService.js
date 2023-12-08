@@ -2,6 +2,8 @@ import User from "../../models/User";
 import bcrypt from "bcrypt";
 import Role from "../../models/Role";
 import { createJWTUser } from "../../middlewares/JWTAction";
+import sendMail from "../../utils/mailer";
+import "dotenv/config";
 
 const saltRounds = 10;
 const salt = bcrypt.genSaltSync(saltRounds);
@@ -99,6 +101,7 @@ const handleLoginUser = async (dataUser) => {
       roleUser: getUserByEmail.role,
     };
     let token = createJWTUser(payload);
+    // await sendMail(getUserByEmail.email, "Login success", `<a href="${process.env.APP_URL}"> Hihi</a>`);
     return {
       EM: "Login account success!",
       EC: 0,
