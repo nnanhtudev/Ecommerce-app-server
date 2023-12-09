@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 import Order from "../../models/Order";
 import Cart from "../../models/Cart";
+import sendMail from "../../utils/mailer";
+import emailContent from "../../utils/mail.Content";
 
 const handleAddOrder = async (data) => {
   try {
@@ -26,7 +28,7 @@ const handleAddOrder = async (data) => {
         return {
           EM: "Order successfully added",
           EC: 0,
-          DT: [],
+          DT: order,
         };
       }
     }
@@ -101,4 +103,38 @@ const handleGetHistoryOderById = async (idOder) => {
     };
   }
 };
-module.exports = { handleAddOrder, handleGetHistoryOder, handleGetHistoryOderById };
+
+const handleSendMailOrder = async (data) => {
+  try {
+    let getOrderId = await Order.findOne({ _id: data.order }).populate({
+      path: "carts",
+      populate: {
+        path: "products",
+        model: "Product", // tên model của collection Product
+      },
+    });
+    let buildDataSendMail = {
+      info: data,
+      order: getOrderId,
+    };
+    // await sendMail(getUserByEmail.email, "Login success", `<a href="${process.env.APP_URL}"> Hihi</a>`);
+
+    let sendMailUser = await sendMail(data.to, "Order Confirmation", emailContent(buildDataSendMail));
+    console.log(sendMailUser);
+    if (sendMailUser) {
+      return {
+        EM: "Send Mail Successfully",
+        EC: 0,
+        DT: sendMailUser,
+      };
+    }
+  } catch (error) {
+    console.log(error);
+    return {
+      EM: "Error form with service",
+      EC: -2,
+      DT: [],
+    };
+  }
+};
+module.exports = { handleAddOrder, handleGetHistoryOder, handleGetHistoryOderById, handleSendMailOrder };

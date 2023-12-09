@@ -57,4 +57,23 @@ const getHistoryOrderById = async (req, res) => {
     });
   }
 };
-module.exports = { addOrder, getHistoryOrder, getHistoryOrderById };
+
+const sendMailOrder = async (req, res) => {
+  try {
+    console.log(req.query);
+    let sendMail = await orderService.handleSendMailOrder(req.query);
+    return res.status(200).json({
+      EM: sendMail.EM, //error message,
+      EC: sendMail.EC, //error code
+      DT: sendMail.DT, //data
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      EM: "error from server", //error message,
+      EC: -1, //error code
+      DT: "", //data
+    });
+  }
+};
+module.exports = { addOrder, getHistoryOrder, getHistoryOrderById, sendMailOrder };
