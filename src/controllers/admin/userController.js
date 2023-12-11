@@ -18,4 +18,26 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-module.exports = { getAllUsers };
+const loginAdmin = async (req, res) => {
+  try {
+    let dataUser = req.body;
+    let data = await userService.handleLoginAdmin(dataUser.data);
+    if (data && data.DT.access_token) {
+      res.cookie("account", data.DT.access_token, { httpOnly: true, maxAge: 60 * 60 * 1000 });
+    }
+    return res.status(200).json({
+      EM: data.EM,
+      EC: data.EC,
+      DT: data.DT,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(404).json({
+      EM: "Error form server",
+      EC: -2,
+      DT: [],
+    });
+  }
+};
+
+module.exports = { getAllUsers, loginAdmin };

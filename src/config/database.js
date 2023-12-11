@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 const connectDB = async () => {
   try {
     await mongoose
-      .connect(process.env.MONGODB_URI, { maxPoolSize: 10 })
+      .connect(process.env.MONGODB_URI, { maxPoolSize: 20 })
       .then(() => console.log("MongoDB connected successfully.!"));
   } catch (error) {
     console.log("MongoDB connection error:' " + error);

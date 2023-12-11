@@ -1,47 +1,9 @@
-import User from "../../models/User";
-import bcrypt from "bcrypt";
-import Role from "../../models/Role";
-import { createJWTUser } from "../../middlewares/JWTAction";
-
 import "dotenv/config";
-
-const saltRounds = 10;
-const salt = bcrypt.genSaltSync(saltRounds);
-const hashPassWord = (password) => {
-  const hash = bcrypt.hashSync(password, salt);
-  return hash;
-  // Store hash in your password DB.
-};
-
-const comparePassword = (inputPassword, hashPassword) => {
-  return bcrypt.compareSync(inputPassword, hashPassword); // true or false
-};
-
-const isExistEmail = async (email) => {
-  try {
-    let check = false;
-    let emailExists = await User.findOne({ email });
-    if (emailExists) {
-      return (check = true);
-    }
-    return check;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const isExistPhone = async (phone) => {
-  try {
-    let check = false;
-    let phoneExists = await User.findOne({ phone });
-    if (phoneExists) {
-      return (check = true);
-    }
-    return check;
-  } catch (error) {
-    console.log(error);
-  }
-};
+import User from "../../models/User";
+import Role from "../../models/Role";
+import { isExistEmail, isExistPhone } from "../../utils/isUser";
+import { hashPassWord, comparePassword } from "../../utils/isPassword";
+import { createJWTUser } from "../../middlewares/JWTAction";
 
 const handleRegisterUser = async (dataUser) => {
   try {

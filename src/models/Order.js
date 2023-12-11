@@ -11,6 +11,7 @@ const Orders = new mongoose.Schema(
     total: { type: Number },
     carts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Cart", required: true }],
     status: { type: String, enum: ["Pending", "Processing", "Shipped", "Delivered"], default: "Pending" },
+    delivery: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
