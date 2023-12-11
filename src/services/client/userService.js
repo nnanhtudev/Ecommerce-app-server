@@ -106,6 +106,7 @@ const handleLoginUser = async (dataUser) => {
       EC: 0,
       DT: {
         access_token: token,
+        id: getUserByEmail._id,
       },
     };
   } catch (error) {

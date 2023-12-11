@@ -9,8 +9,15 @@ const Sessions = new mongoose.Schema(
         timestamp: { type: Date, default: Date.now },
       },
     ],
+    // Trường timestamp
+    expireAt: {
+      type: Date,
+      default: Date.now() + 1000 * 60 * 60 * 24,
+    },
   },
   { timestamps: true }
 );
+
+Sessions.index({ expireAt: 1 }, { expireAfterSeconds: 0 }); // Kích hoạt tính năng tự động xóa
 
 module.exports = mongoose.model("Session", Sessions);

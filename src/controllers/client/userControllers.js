@@ -62,4 +62,22 @@ const handleGetAccount = (req, res) => {
     });
   }
 };
-module.exports = { handleRegister, handleLogin, handleGetAccount };
+
+const handleLogOut = (req, res) => {
+  try {
+    res.clearCookie("account");
+    return res.status(200).json({
+      EM: "Logout Success!",
+      EC: 0, //error code
+      DT: "", //data
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      EM: "error from server", //error message,
+      EC: -1, //error code
+      DT: "", //data
+    });
+  }
+};
+module.exports = { handleRegister, handleLogin, handleGetAccount, handleLogOut };

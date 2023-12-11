@@ -6,8 +6,10 @@ const router = express.Router();
 
 router.all("*", checkUserJWT);
 
+router.get("/account", userController.handleGetAccount);
+
 router.post("/register", userController.handleRegister);
 router.post("/login", userController.handleLogin);
-router.get("/account", userController.handleGetAccount);
+router.post("/logout", userController.handleLogOut);
 
 export default router;
