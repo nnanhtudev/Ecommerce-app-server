@@ -1,6 +1,6 @@
 import http from "http";
 import { Server } from "socket.io";
-import config from "./src/config";
+import config from "./src/config/index";
 import app from "./src/app";
 import { initSocket } from "./src/socket/socketManager";
 // import SocketServices from "./src/services/chat.service";

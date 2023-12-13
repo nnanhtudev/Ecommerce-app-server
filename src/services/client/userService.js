@@ -21,6 +21,7 @@ const handleRegisterUser = async (dataUser) => {
     // compare hash password
     let hashPw = hashPassWord(dataUser.password);
     const customerRole = await Role.findOne({ name: "Customer" });
+    console.log(customerRole);
     let register = await User.create({
       email: dataUser.email,
       phone: dataUser.phone,
@@ -28,6 +29,7 @@ const handleRegisterUser = async (dataUser) => {
       fullName: dataUser.fullname,
       role: [customerRole._id],
     });
+    console.log(register);
     if (register) {
       return {
         EM: "Register account success!",

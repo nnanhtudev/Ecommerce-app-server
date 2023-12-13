@@ -2,5 +2,9 @@
 export default {
   PORT: process.env.PORT || 8080,
   apiBaseUrl: "https://production-api.example.com/api",
-  socketIoPort: 5002,
+  MONGODB_URI: process.env.MONGODB_URI,
+  cors: {
+    origin: process.env.URL_CLIENT,
+    methods: ["GET", "POST"],
+  },
 };

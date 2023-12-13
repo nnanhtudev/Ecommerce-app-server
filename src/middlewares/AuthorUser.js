@@ -2,12 +2,12 @@ const nonSecurePaths = ["/logout", "/login", "/register"];
 
 const checkUserPermission = (req, res, next) => {
   if (nonSecurePaths.includes(req.path)) return next();
-  console.log("req.user", req.user);
+  // console.log("req.user", req.user);
   if (req.user) {
     let id = req.user.id;
     let roles = req.user.roleUser;
     const currentUrl = req.headers["x-current-route"] || "";
-    console.log("currentUrl", currentUrl);
+    // console.log("currentUrl", currentUrl);
 
     // Check if the user has the 'admin' role
     if (roles.some((role) => role.url === "admin")) {
