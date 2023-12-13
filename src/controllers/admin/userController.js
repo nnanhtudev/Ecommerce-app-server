@@ -23,7 +23,12 @@ const loginAdmin = async (req, res) => {
     let dataUser = req.body;
     let data = await userService.handleLoginAdmin(dataUser.data);
     if (data && data.DT.access_token) {
-      res.cookie("account", data.DT.access_token, { httpOnly: true, maxAge: 60 * 60 * 1000 });
+      res.cookie("account", data.DT.access_token, {
+        httpOnly: true,
+        maxAge: 60 * 60 * 1000,
+        sameSite: "None",
+        secure: true,
+      });
     }
     return res.status(200).json({
       EM: data.EM,
