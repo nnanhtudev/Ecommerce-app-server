@@ -28,9 +28,6 @@ const handleLogin = async (req, res) => {
     res.cookie("account", data.DT.access_token, {
       httpOnly: true,
       maxAge: 60 * 60 * 1000,
-      sameSite: "None",
-      secure: true,
-      domain: `.${process.env.APP_URL}`, // Điền domain thực tế của bạn ở đây
     });
     return res.status(200).json({
       EM: data.EM,
