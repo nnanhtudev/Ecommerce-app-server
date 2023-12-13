@@ -1,4 +1,5 @@
 import handleUserService from "../../services/client/userService";
+import "dotenv/config";
 
 const handleRegister = async (req, res) => {
   try {
@@ -24,7 +25,13 @@ const handleLogin = async (req, res) => {
     let dataUser = req.body;
     let data = await handleUserService.handleLoginUser(dataUser.data);
     console.log(data);
-    res.cookie("account", data.DT.access_token, { httpOnly: true, maxAge: 60 * 60 * 1000 });
+    res.cookie("account", data.DT.access_token, {
+      httpOnly: true,
+      maxAge: 60 * 60 * 1000,
+      sameSite: "None",
+      secure: true,
+      domain: process.env.APP_URL, // Điền domain thực tế của bạn ở đây
+    });
     return res.status(200).json({
       EM: data.EM,
       EC: data.EC,
