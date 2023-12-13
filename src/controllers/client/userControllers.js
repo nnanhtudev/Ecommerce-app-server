@@ -23,6 +23,7 @@ const handleLogin = async (req, res) => {
   try {
     let dataUser = req.body;
     let data = await handleUserService.handleLoginUser(dataUser.data);
+    console.log(data);
     res.cookie("account", data.DT.access_token, { httpOnly: true, maxAge: 60 * 60 * 1000 });
     return res.status(200).json({
       EM: data.EM,
