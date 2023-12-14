@@ -1,5 +1,5 @@
 import "dotenv/config";
-
+import config from "./index";
 const configCors = (app) => {
   // Add headers before the routes are defined
   app.use(function (req, res, next) {
@@ -7,7 +7,7 @@ const configCors = (app) => {
     const origin = req.get("Origin");
 
     // Check if the request origin is allowed
-    if ([process.env.URL_CLIENT, process.env.URL_ADMIN].includes(origin)) {
+    if ([config.URL_CLIENT, config.URL_ADMIN].includes(origin)) {
       // Allow the request origin
       res.setHeader("Access-Control-Allow-Origin", origin);
     }

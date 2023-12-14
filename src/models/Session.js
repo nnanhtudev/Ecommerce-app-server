@@ -12,7 +12,7 @@ const Sessions = new mongoose.Schema(
     // Trường timestamp
     expireAt: {
       type: Date,
-      default: Date.now() + 1000 * 60 * 60 * 24,
+      expires: 1000 * 60 * 60 * 24,
     },
   },
   { timestamps: true }
